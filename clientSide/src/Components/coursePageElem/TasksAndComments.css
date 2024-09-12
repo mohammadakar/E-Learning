@@ -1,0 +1,62 @@
+.task-container {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    position: relative;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.comment-container {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    margin-bottom: 20px;
+}
+
+.task-header, .comment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.date {
+    font-size: 0.9rem;
+    color: #888;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+}
+
+.button1 {
+    position: absolute;
+    bottom: 10px;
+    right: 15px;
+}
+
+@media (max-width: 768px) {
+    .tasks-comments-container {
+        padding: 10px;
+    }
+    
+    .task-header, .comment-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .date {
+        position: static;
+        margin-top: 5px;
+    }
+
+    .button1 {
+        position: static;
+        margin-top: 10px;
+        align-self: flex-end;
+    }
+}
