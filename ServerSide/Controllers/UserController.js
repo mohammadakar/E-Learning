@@ -44,7 +44,7 @@ module.exports.updateProfilePhoto = asynchandler(async (req, res) => {
 
         // Update user's profile photo
         user.profilePhoto = {
-            url: `http://localhost:7500/uploads/${req.file.filename}`
+            url: `https://e-learning-sb94.onrender.com/uploads/${req.file.filename}`
         };
         await user.save();
 
