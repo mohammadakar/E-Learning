@@ -38,7 +38,7 @@ const Home = () => {
             <Header />
             {user?.isAdmin ? (
                 <div className="course-container">
-                    <div className="flex-grow container mx-auto mt-10 px-4 py-5">
+                    <div className="flex-grow container mx-auto mt-10 px-4 py-5 ml-20">
                         {currentCourses.length > 0 ? (
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                                 {currentCourses.map(course => (

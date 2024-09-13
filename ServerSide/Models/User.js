@@ -21,10 +21,11 @@ const userSchema=new mongoose.Schema({
         required:true
     },
     profilePhoto: {
-        url: { type: String,
-            default:"https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png" 
-        }, 
-        public_id: { type: String ,default:null}
+        type:Object,
+        default:{
+            url:"",
+            publicId:null,
+        }
 
     },
     isAdmin:{
