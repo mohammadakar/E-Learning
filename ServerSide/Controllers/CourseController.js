@@ -265,8 +265,7 @@ module.exports.submitAssignment = asynchandler(async (req, res) => {
         username: req.user.username || null,
         file: {
             fileName: req.file.filename,
-            fileUrl: req.file.path,  
-            fileType: req.file.mimetype  
+            fileUrl: req.file.path, 
         },
         taskId: req.params.taskId
     };
