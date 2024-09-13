@@ -4,16 +4,7 @@ const multer = require('multer');
 const path = require('path');
 const { verifyToken, verifyTokenAndAdmin } = require("../Middlewares/authmiddleware");
 
-// Configure multer
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'uploads/');
-    },
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + path.extname(file.originalname));
-    }
-});
-
+const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 router.post('/updateProfilePhoto', verifyToken, upload.single('profilePhoto'), updateProfilePhoto);

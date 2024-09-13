@@ -4,6 +4,7 @@ const fs = require("fs");
 const { User } = require("../Models/User");
 const bcrypt = require('bcryptjs');
 const { Course } = require("../Models/Course");
+const { cloudinaryRemoveImage, cloudinaryUploadImage } = require("../utils/cloudinary");
 
 module.exports.updateUserProfile = asynchandler(async (req, res) => {
     if (req.body.password) {
@@ -21,30 +22,29 @@ module.exports.updateUserProfile = asynchandler(async (req, res) => {
     res.status(200).json(updateUser);
 });
 
-module.exports.updateProfilePhoto = asynchandler(async (req, res) => {
+module.exports.updateProfilePhoto = asyncHandler(async (req, res) => {
     if (!req.file) {
         return res.status(400).json({ message: "No file provided!" });
     }
 
     try {
-        const imagePath = path.join(__dirname, `../uploads/${req.file.filename}`);
-
         const user = await User.findById(req.user.id);
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
 
         // Remove old profile photo if it exists
-        if (user.profilePhoto && user.profilePhoto.url) {
-            const oldImagePath = path.join(__dirname, `../uploads/${path.basename(user.profilePhoto.url)}`);
-            if (fs.existsSync(oldImagePath)) {
-                fs.unlinkSync(oldImagePath);
-            }
+        if (user.profilePhoto && user.profilePhoto.public_id) {
+            await cloudinaryRemoveImage(user.profilePhoto.public_id);
         }
+
+        // Upload new profile photo
+        const result = await cloudinaryUploadImage(req.file.path);
 
         // Update user's profile photo
         user.profilePhoto = {
-            url: `https://e-learning-sb94.onrender.com/uploads/${req.file.filename}`
+            url: result.secure_url,
+            public_id: result.public_id
         };
         await user.save();
 
@@ -58,6 +58,7 @@ module.exports.updateProfilePhoto = asynchandler(async (req, res) => {
         res.status(500).json({ message: "Internal Server Error" });
     }
 });
+
 
 module.exports.registerCourse = asynchandler(async (req, res) => {
     const user = await User.findById(req.user.id);

@@ -196,9 +196,9 @@ module.exports.deleteTask = asynchandler(async (req, res) => {
         return res.status(404).json({ message: 'Task not found' });
     }
 
-    course.tasks.pop(task);
+    course.tasks.id(req.params.taskId).remove();
+    course.assignments = course.assignments.filter(assignment => assignment.taskId.toString() !== req.params.taskId);
 
-    course.assignments.pop(course.assignments.map((assignment=>assignment.taskId===task._id)));
 
 
     await course.save();
@@ -217,7 +217,8 @@ module.exports.deleteComment = asynchandler(async (req, res) => {
         return res.status(404).json({ message: 'Comment not found' });
     }
 
-    course.comments.pop(comment);
+    course.comments.id(req.params.commentId).remove(); 
+
 
     await course.save();
 
@@ -238,37 +239,42 @@ module.exports.getTask = asynchandler(async (req, res) => {
     res.status(200).json(task);
 });
 
-module.exports.submitAssignment=asynchandler(async (req,res)=>{
-    console.log(req.user);
+module.exports.submitAssignment = asynchandler(async (req, res) => {
     if (!req.user) {
         return res.status(401).json({ error: 'User not authenticated' });
     }
-    const course = await Course.findById(req.params.courseId);
 
-    if(!course){
-        return res.status(200).json("Course not found");
+    const course = await Course.findById(req.params.courseId);
+    if (!course) {
+        return res.status(404).json("Course not found");
     }
 
-    if(course.assignments.some(assignment => assignment.username === req.user.username)) {
+
+    if (course.assignments.some(assignment => assignment.username === req.user.username)) {
         return res.status(400).json({ message: "You have already submitted your assignment!" });
     }
 
-    const task=course.tasks.id(req.params.taskId);
-
-    const assignment = {
-        assignment:task.title,
-        username:req.user.username || null,
-        file: {
-            fileName: req.file.filename,
-            filePath: req.file.path
-        },
-        taskId:req.params.taskId
+    const task = course.tasks.id(req.params.taskId);
+    if (!task) {
+        return res.status(404).json({ message: 'Task not found' });
     }
 
-    course.assignments.push(assignment);
+    
+    const assignment = {
+        assignment: task.title,
+        username: req.user.username || null,
+        file: {
+            fileName: req.file.filename,
+            fileUrl: req.file.path,  
+            fileType: req.file.mimetype  
+        },
+        taskId: req.params.taskId
+    };
 
+    course.assignments.push(assignment);
     await course.save();
 
-    res.status(200).json(assignment)
-})
+    res.status(200).json(assignment);
+});
+
 

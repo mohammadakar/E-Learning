@@ -37,7 +37,7 @@ const Home = () => {
         <section>
             <Header />
             {user?.isAdmin ? (
-                <div className="min-h-screen flex flex-col bg-gray-100">
+                <div className="course-container">
                     <div className="flex-grow container mx-auto mt-10 px-4 py-5">
                         {currentCourses.length > 0 ? (
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
