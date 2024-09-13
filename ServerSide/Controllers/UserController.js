@@ -36,9 +36,10 @@ module.exports.updateProfilePhoto = asynchandler(async (req, res) => {
             await cloudinaryRemoveImage(user.profilePhoto.public_id);
         }
 
-        // Upload new profile photo
-        const result = await cloudinaryUploadImage(req.file.path);
-
+        // Upload new profile photo using the buffer
+        const result = await cloudinaryUploadImage(req.file.buffer.toString('base64'));
+        console.log(result);
+        
         // Update user's profile photo
         user.profilePhoto = {
             url: result.secure_url,
@@ -56,6 +57,7 @@ module.exports.updateProfilePhoto = asynchandler(async (req, res) => {
         res.status(500).json({ message: "Internal Server Error" });
     }
 });
+
 
 
 module.exports.registerCourse = asynchandler(async (req, res) => {

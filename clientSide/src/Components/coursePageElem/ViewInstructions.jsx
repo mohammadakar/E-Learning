@@ -11,7 +11,8 @@ const ViewInstructions = () => {
     const dispatch = useDispatch();
     const { taskById } = useSelector(state => state.course);
     const [file, setFile] = useState(null);
-
+    console.log(file);
+    
     useEffect(() => {
         dispatch(getTaskById(courseId, taskId));
     }, [dispatch, courseId, taskId]);

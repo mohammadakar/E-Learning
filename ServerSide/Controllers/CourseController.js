@@ -240,40 +240,48 @@ module.exports.getTask = asynchandler(async (req, res) => {
 });
 
 module.exports.submitAssignment = asynchandler(async (req, res) => {
+    // Check if user is authenticated
     if (!req.user) {
         return res.status(401).json({ error: 'User not authenticated' });
     }
 
+    // Find the course by ID
     const course = await Course.findById(req.params.courseId);
     if (!course) {
         return res.status(404).json("Course not found");
     }
 
-
-    if (course.assignments.some(assignment => assignment.username === req.user.username)) {
+    // Check if user has already submitted an assignment for this task
+    if (course.assignments.some(assignment => assignment.username === req.user.username && assignment.taskId.toString() === req.params.taskId)) {
         return res.status(400).json({ message: "You have already submitted your assignment!" });
     }
 
+    // Find the task by ID
     const task = course.tasks.id(req.params.taskId);
     if (!task) {
         return res.status(404).json({ message: 'Task not found' });
     }
 
-    
+    // Check if file is uploaded
+    if (!req.file) {
+        return res.status(400).json({ error: "No file uploaded" });
+    }
+
+    // Create the new assignment object
     const assignment = {
         assignment: task.title,
-        username: req.user.username || null,
+        username: req.user.username,
         file: {
             fileName: req.file.filename,
-            filePath: req.file.path,   
+            filePath: req.file.path,   // This should be the correct path or Cloudinary URL if you're using Cloudinary
         },
         taskId: req.params.taskId
     };
 
+    // Add the new assignment to the course
     course.assignments.push(assignment);
     await course.save();
 
+    // Respond with the newly added assignment
     res.status(200).json(assignment);
 });
-
-

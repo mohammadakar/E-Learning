@@ -7,13 +7,15 @@ export function updateProfilePhoto(newPhoto) {
     return async (dispatch, getState) => {
         try {
             const formData = new FormData();
-            formData.append('profilePhoto', newPhoto);
+            formData.append('image', newPhoto);
             const res = await request.post(`/api/user/updateProfilePhoto`, formData, {
                 headers: {
                     Authorization: "Bearer " + getState().auth.user.token,
                     "content-type": "multipart/form-data"
                 }
             });
+            console.log(res.data);
+            
             dispatch(userActions.setProfilePhoto(res.data.profilePhoto));
             dispatch(authActions.setUserPhoto(res.data.profilePhoto));
 
