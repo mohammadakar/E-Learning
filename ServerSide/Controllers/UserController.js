@@ -1,6 +1,4 @@
 const asynchandler = require("express-async-handler");
-const path = require("path");
-const fs = require("fs");
 const { User } = require("../Models/User");
 const bcrypt = require('bcryptjs');
 const { Course } = require("../Models/Course");
@@ -22,7 +20,7 @@ module.exports.updateUserProfile = asynchandler(async (req, res) => {
     res.status(200).json(updateUser);
 });
 
-module.exports.updateProfilePhoto = asyncHandler(async (req, res) => {
+module.exports.updateProfilePhoto = asynchandler(async (req, res) => {
     if (!req.file) {
         return res.status(400).json({ message: "No file provided!" });
     }
