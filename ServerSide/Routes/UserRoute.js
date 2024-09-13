@@ -31,7 +31,7 @@ const photoUpload=multer({
 
 });
 
-router.post('/updateProfilePhoto', verifyToken, upload.single("image"), updateProfilePhoto);
+router.post('/updateProfilePhoto', verifyToken, photoUpload.single("image"), updateProfilePhoto);
 router.delete('/delete', verifyToken, deleteAcc);
 router.put('/updateProfile', verifyToken, updateUserProfile);
 router.get('/allUserscount', verifyTokenAndAdmin, getAllUsersCount);
