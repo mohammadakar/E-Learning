@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon ServerSide/index.js",
+    "start": "node ServerSide/index.js",
     "build": "npm install && npm install --prefix clientSide && npm run build --prefix clientSide",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
