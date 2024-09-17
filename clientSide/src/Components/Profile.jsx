@@ -31,6 +31,9 @@ const Profile = () => {
         });
     };
 
+    console.log(profilePhoto);
+    
+
     const formSubmitHandler = (e) => {
         e.preventDefault();
         if (profilePhoto) {

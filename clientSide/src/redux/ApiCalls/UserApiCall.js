@@ -11,8 +11,7 @@ export function updateProfilePhoto(newPhoto) {
             const res = await request.post(`/api/user/updateProfilePhoto`, formData, {
                 headers: {
                     Authorization: "Bearer " + getState().auth.user.token,
-                    "content-type": "multipart/form-data"
-                }
+                  }
             });
             console.log(res.data);
             

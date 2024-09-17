@@ -40,7 +40,7 @@ const ViewAssignments = () => {
                                 <h1 className="font-bold text-lg sm:text-base">{assignment.assignment}</h1>
                                 <p className="uppercase mt-1 text-sm text-gray-700">{assignment.username}</p>
                                 <a
-                                    href={`${assignment.file.filePath}`} 
+                                    href={`${assignment.file?.filePath}`} 
                                     target="_blank" 
                                     rel="noopener noreferrer"
                                     className="text-blue-500 underline mt-3 block"

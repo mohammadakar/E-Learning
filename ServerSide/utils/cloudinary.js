@@ -45,5 +45,6 @@ const cloudinaryRemoveManyImage=async (publicIds)=>{
 module.exports={
     cloudinaryUploadImage,
     cloudinaryRemoveImage,
-    cloudinaryRemoveManyImage
+    cloudinaryRemoveManyImage,
+    cloudinary
 }

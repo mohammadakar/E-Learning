@@ -3,6 +3,7 @@ const { User } = require("../Models/User");
 const bcrypt = require('bcryptjs');
 const { Course } = require("../Models/Course");
 const { cloudinaryRemoveImage, cloudinaryUploadImage } = require("../utils/cloudinary");
+const path = require("path");
 
 module.exports.updateUserProfile = asynchandler(async (req, res) => {
     if (req.body.password) {
@@ -37,8 +38,10 @@ module.exports.updateProfilePhoto = asynchandler(async (req, res) => {
         }
 
         // Upload new profile photo using the buffer
-        const result = await cloudinaryUploadImage(req.file.buffer.toString('base64'));
-        console.log(result);
+        const imagePath = path.join(__dirname, `../images/${req.file.filename}`);
+
+        // Upload image to Cloudinary
+        const result = await cloudinaryUploadImage(imagePath);
         
         // Update user's profile photo
         user.profilePhoto = {
