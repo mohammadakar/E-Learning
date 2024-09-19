@@ -47,5 +47,5 @@ router.put("/:courseId/comment/:commentId",editComment);
 router.delete("/:courseId/task/:taskId",deleteTask);
 router.delete("/:courseId/comment/:commentId",deleteComment);
 router.get("/:courseId/task/:taskId",getTask);
-router.post("/:courseId/submit-assignment/task/:taskId",fileUpload.single("application"),verifyToken,submitAssignment);
+router.post("/:courseId/submit-assignment/task/:taskId",fileUpload.single("file"),verifyToken,submitAssignment);
 module.exports=router;

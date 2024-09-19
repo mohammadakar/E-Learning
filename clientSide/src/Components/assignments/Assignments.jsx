@@ -7,9 +7,6 @@ const Assignments = () => {
     const {user}=useSelector(state => state.auth);
     const { courses } = useSelector(state => state.course);
 
-    console.log(user,courses);
-    
-
     return ( 
         <div>
             <Header/>

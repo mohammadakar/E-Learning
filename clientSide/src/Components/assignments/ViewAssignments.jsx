@@ -20,7 +20,6 @@ const ViewAssignments = () => {
     const indexOfLastAssignment = currentPage * assignmentsPerPage;
     const indexOfFirstAssignment = indexOfLastAssignment - assignmentsPerPage;
     const currentAssignments = courseById?.assignments.slice(indexOfFirstAssignment, indexOfLastAssignment);
-    console.log(currentAssignments);
     
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
