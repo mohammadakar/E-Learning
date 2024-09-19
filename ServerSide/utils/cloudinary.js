@@ -10,7 +10,7 @@ cloudinary.config({
 const cloudinaryUploadImage = async (fileToUploadPath) => {
     try {
         const data = await cloudinary.uploader.upload(fileToUploadPath, {
-            resource_type: 'auto'
+            resource_type: 'raw'
         });
         return data;
     } catch (error) {

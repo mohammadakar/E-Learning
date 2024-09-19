@@ -9,7 +9,6 @@ const ViewAssignments = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
     
-    
     const [currentPage, setCurrentPage] = useState(1);
     const assignmentsPerPage = 9;
 
@@ -40,7 +39,7 @@ const ViewAssignments = () => {
                                 <h1 className="font-bold text-lg sm:text-base">{assignment.assignment}</h1>
                                 <p className="uppercase mt-1 text-sm text-gray-700">{assignment.username}</p>
                                 <a
-                                    href={`https://e-learning-sb94.onrender.com/${assignment?.file?.filePath}`} 
+                                    href={`${assignment?.file?.filePath}`} 
                                     target="_blank" 
                                     rel="noopener noreferrer"
                                     className="text-blue-500 underline mt-3 block"
