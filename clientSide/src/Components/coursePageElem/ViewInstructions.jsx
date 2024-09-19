@@ -5,14 +5,16 @@ import { getTaskById, submitAssignment } from "../../redux/ApiCalls/CourseApiCal
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { FaFilePdf } from "react-icons/fa";
+import { storage } from "../../firebase";  // Import Firebase storage
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage"; // Firebase Storage functions
 
 const ViewInstructions = () => {
     const { courseId, taskId } = useParams();
     const dispatch = useDispatch();
     const { taskById } = useSelector(state => state.course);
     const [file, setFile] = useState(null);
-    console.log(file);
-    
+    const [isUploading, setIsUploading] = useState(false);
+
     useEffect(() => {
         dispatch(getTaskById(courseId, taskId));
     }, [dispatch, courseId, taskId]);
@@ -23,16 +25,39 @@ const ViewInstructions = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (file && file.type.includes("pdf")){
-            dispatch(submitAssignment(courseId, file ,taskId));
-            setFile(null);
-            e.target.reset();  
-        } else {
-            toast.error("Please upload a PDF file.");
+
+        if (!file || !file.type.includes("pdf")) {
+            toast.error("Please upload a valid PDF file.");
+            return;
         }
+
+        const storageRef = ref(storage, `assignments/${courseId}/${taskId}/${file.name}`);
+        const uploadTask = uploadBytesResumable(storageRef, file);
+        setIsUploading(true);
+
+        uploadTask.on(
+            "state_changed",
+            (snapshot) => {
+                // Progress function (optional)
+            },
+            (error) => {
+                setIsUploading(false);
+                toast.error("Error uploading file: " + error.message);
+            },
+            () => {
+                getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                    // Here you can dispatch the action to submit the assignment with the downloadURL
+                    dispatch(submitAssignment(courseId, downloadURL, taskId));
+                    toast.success("Assignment submitted successfully!");
+                    setFile(null); // Reset file input
+                    e.target.reset(); // Reset form
+                    setIsUploading(false);
+                });
+            }
+        );
     };
 
-    return ( 
+    return (
         <section className="flex flex-col lg:flex-row mt-20 ml-4 mr-4">
             <Header />
             <div className="container mx-auto px-4 mt-10 lg:mt-20">
@@ -47,7 +72,7 @@ const ViewInstructions = () => {
                     <label htmlFor="fileUpload" className="block mb-2 font-semibold text-gray-700">
                         Upload PDF:
                     </label>
-                    
+
                     {file && (
                         <div className="flex items-center justify-between border border-gray-300 p-2 rounded mb-4 bg-gray-50">
                             <span className="text-gray-700">{file.name}</span>
@@ -74,13 +99,14 @@ const ViewInstructions = () => {
                     <button
                         type="submit"
                         className="bg-blue-500 text-white p-2 rounded w-full"
+                        disabled={isUploading}  // Disable button during upload
                     >
-                        Submit Assignment
+                        {isUploading ? "Uploading..." : "Submit Assignment"}
                     </button>
                 </form>
             </div>
         </section>
     );
-}
+};
 
 export default ViewInstructions;

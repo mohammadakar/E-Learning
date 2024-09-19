@@ -240,60 +240,43 @@ module.exports.getTask = asynchandler(async (req, res) => {
 });
 
 module.exports.submitAssignment = asynchandler(async (req, res) => {
-    // Check if user is authenticated
     if (!req.user) {
         return res.status(401).json({ error: 'User not authenticated' });
     }
 
-    // Find the course by ID
     const course = await Course.findById(req.params.courseId);
     if (!course) {
         return res.status(404).json("Course not found");
     }
 
-    // Check if user has already submitted an assignment for this task
     if (course.assignments.some(assignment => assignment.username === req.user.username && assignment.taskId.toString() === req.params.taskId)) {
         return res.status(400).json({ message: "You have already submitted your assignment!" });
     }
 
-    // Find the task by ID
     const task = course.tasks.id(req.params.taskId);
     if (!task) {
         return res.status(404).json({ message: 'Task not found' });
     }
 
-    // Check if file is uploaded
-    if (!req.file) {
+    // The file URL will be sent from the frontend instead of uploading a file on the backend.
+    const { fileUrl, fileName } = req.body;
+
+    if (!fileUrl || !fileName) {
         return res.status(400).json({ error: "No file provided!" });
     }
 
-    try {
-        // Upload file to Cloudinary using the file path
-        const uploadResult = await cloudinaryUploadImage(req.file.path);
-        if (!uploadResult) {
-            return res.status(400).json("File upload failed");
-        }
+    const assignment = {
+        assignment: task.title,
+        username: req.user.username,
+        file: {
+            fileName,
+            filePath: fileUrl
+        },
+        taskId: req.params.taskId
+    };
 
-        // Create the new assignment object
-        const assignment = {
-            assignment: task.title,
-            username: req.user.username,
-            file: {
-                fileName: uploadResult.original_filename,
-                filePath: uploadResult.secure_url,
-                public_id: uploadResult.public_id
-            },
-            taskId: req.params.taskId
-        };
+    course.assignments.push(assignment);
+    await course.save();
 
-        // Add the new assignment to the course
-        course.assignments.push(assignment);
-        await course.save();
-
-        // Respond with the newly added assignment
-        res.status(200).json(assignment);
-    } catch (error) {
-        console.error('Cloudinary upload failed:', error);
-        return res.status(500).json({ error: 'File upload failed, please try again later.' });
-    }
+    res.status(200).json(assignment);
 });

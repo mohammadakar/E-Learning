@@ -184,22 +184,19 @@ export function getTaskById(courseId,taskId){
     }
 }
 
-export function submitAssignment(courseId, file , taskId){
+export function submitAssignment(courseId, fileData, taskId) {
     return async (dispatch, getState) => {
         try {
-            const formData = new FormData();
-            formData.append('file', file);
-
-            await request.post(`/api/course/${courseId}/submit-assignment/task/${taskId}`, formData, {
+            await request.post(`/api/course/${courseId}/submit-assignment/task/${taskId}`, fileData, {
                 headers: {
-                    'Content-Type': 'multipart/form-data',
-                    Authorization: "Bearer " + getState().auth.user.token
-                }
+                    Authorization: "Bearer " + getState().auth.user.token,
+                },
             });
             toast.success("Assignment submitted successfully!");
         } catch (error) {
             toast.error(error.response.data.message);
         }
-    }
+    };
 }
+
 
