@@ -7,7 +7,7 @@ const multer = require('multer');
 const path = require('path');
 const { verifyToken, verifyTokenAndAdmin } = require("../Middlewares/authmiddleware");
 
-// Multer storage configuration for profile photo uploads
+
 const photoStorage=multer.diskStorage({
     destination:function(req,file,cb){
         cb(null,path.join(__dirname,"../images"))
@@ -31,11 +31,11 @@ const photoUpload=multer({
             cb({message:"unsupported file format"},false);
         }
     },
-    limits:{fileSize:5024*5024} //1024*1024 = 1 megabyte
+    limits:{fileSize:5024*5024} 
 
 });
 
-// Routes for user actions, including the upload profile photo endpoint
+
 router.post('/updateProfilePhoto', verifyToken, photoUpload.single("image"), updateProfilePhoto);
 router.delete('/delete', verifyToken, deleteAcc);
 router.put('/updateProfile', verifyToken, updateUserProfile);

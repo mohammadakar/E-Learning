@@ -2,7 +2,7 @@ const asynchandler=require('express-async-handler');
 const { validateAddCourse, Course } = require('../Models/Course');
 const { User } = require('../Models/User');
 const sendMail = require('../utils/sendMail');
-
+const { cloudinaryUploadImage } = require('../utils/cloudinary');
 
 module.exports.addCourse=asynchandler(async (req,res)=>{
     const {error}=validateAddCourse(req.body);
@@ -239,8 +239,6 @@ module.exports.getTask = asynchandler(async (req, res) => {
     res.status(200).json(task);
 });
 
-const { cloudinaryUploadImage } = require('../utils/cloudinary'); // Import Cloudinary upload function
-
 module.exports.submitAssignment = asynchandler(async (req, res) => {
     // Check if user is authenticated
     if (!req.user) {
@@ -270,19 +268,20 @@ module.exports.submitAssignment = asynchandler(async (req, res) => {
     }
 
     try {
-        // Upload file to Cloudinary using the file buffer
-        const uploadResult = await cloudinaryUploadImage(req.file);
-        if(!uploadResult){
-            return res.status(400).json("errorrrrr")
+        // Upload file to Cloudinary using the file path
+        const uploadResult = await cloudinaryUploadImage(req.file.path);
+        if (!uploadResult) {
+            return res.status(400).json("File upload failed");
         }
+
         // Create the new assignment object
         const assignment = {
             assignment: task.title,
             username: req.user.username,
             file: {
                 fileName: uploadResult.original_filename,
-                filePath: uploadResult.secure_url, 
-                public_id: uploadResult.public_id    
+                filePath: uploadResult.secure_url,
+                public_id: uploadResult.public_id
             },
             taskId: req.params.taskId
         };
