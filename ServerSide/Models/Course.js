@@ -63,7 +63,8 @@ const courseSchema = new mongoose.Schema({
         },
         file:{
             fileName: String,
-            filePath: String
+            filePath: String,
+            public_id:String
         },
         taskId: { 
             type: mongoose.Schema.Types.ObjectId, 

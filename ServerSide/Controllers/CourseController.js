@@ -239,6 +239,8 @@ module.exports.getTask = asynchandler(async (req, res) => {
     res.status(200).json(task);
 });
 
+const { cloudinaryUploadImage } = require('../utils/cloudinary'); // Import Cloudinary upload function
+
 module.exports.submitAssignment = asynchandler(async (req, res) => {
     // Check if user is authenticated
     if (!req.user) {
@@ -264,24 +266,35 @@ module.exports.submitAssignment = asynchandler(async (req, res) => {
 
     // Check if file is uploaded
     if (!req.file) {
-        return res.status(400).json({ error: "No file uploaded" });
+        return res.status(400).json({ error: "No file provided!" });
     }
 
-    // Create the new assignment object
-    const assignment = {
-        assignment: task.title,
-        username: req.user.username,
-        file: {
-            fileName: req.file.filename,
-            filePath: req.file.path,   // This should be the correct path or Cloudinary URL if you're using Cloudinary
-        },
-        taskId: req.params.taskId
-    };
+    try {
+        // Upload file to Cloudinary using the file buffer
+        const uploadResult = await cloudinaryUploadImage(req.file);
+        if(!uploadResult){
+            return res.status(400).json("errorrrrr")
+        }
+        // Create the new assignment object
+        const assignment = {
+            assignment: task.title,
+            username: req.user.username,
+            file: {
+                fileName: uploadResult.original_filename,
+                filePath: uploadResult.secure_url, 
+                public_id: uploadResult.public_id    
+            },
+            taskId: req.params.taskId
+        };
 
-    // Add the new assignment to the course
-    course.assignments.push(assignment);
-    await course.save();
+        // Add the new assignment to the course
+        course.assignments.push(assignment);
+        await course.save();
 
-    // Respond with the newly added assignment
-    res.status(200).json(assignment);
+        // Respond with the newly added assignment
+        res.status(200).json(assignment);
+    } catch (error) {
+        console.error('Cloudinary upload failed:', error);
+        return res.status(500).json({ error: 'File upload failed, please try again later.' });
+    }
 });
