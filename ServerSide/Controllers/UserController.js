@@ -32,18 +32,18 @@ module.exports.updateProfilePhoto = asynchandler(async (req, res) => {
             return res.status(404).json({ message: "User not found" });
         }
 
-        // Remove old profile photo if it exists
+        
         if (user.profilePhoto && user.profilePhoto.public_id) {
             await cloudinaryRemoveImage(user.profilePhoto.public_id);
         }
 
-        // Upload new profile photo using the buffer
+        
         const imagePath = path.join(__dirname, `../images/${req.file.filename}`);
 
-        // Upload image to Cloudinary
+        
         const result = await cloudinaryUploadImage(imagePath);
         
-        // Update user's profile photo
+        
         user.profilePhoto = {
             url: result.secure_url,
             public_id: result.public_id

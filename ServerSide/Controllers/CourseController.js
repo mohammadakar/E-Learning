@@ -258,20 +258,11 @@ module.exports.submitAssignment = asynchandler(async (req, res) => {
         return res.status(404).json({ message: 'Task not found' });
     }
 
-    // The file URL will be sent from the frontend instead of uploading a file on the backend.
-    const { fileUrl, fileName } = req.body;
-
-    if (!fileUrl || !fileName) {
-        return res.status(400).json({ error: "No file provided!" });
-    }
 
     const assignment = {
         assignment: task.title,
         username: req.user.username,
-        file: {
-            fileName,
-            filePath: fileUrl
-        },
+        file: req.body.filePath,
         taskId: req.params.taskId
     };
 

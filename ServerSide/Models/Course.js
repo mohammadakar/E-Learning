@@ -62,9 +62,7 @@ const courseSchema = new mongoose.Schema({
             type:String
         },
         file:{
-            fileName: String,
-            filePath: String,
-            public_id:String
+            type:String
         },
         taskId: { 
             type: mongoose.Schema.Types.ObjectId, 
@@ -76,7 +74,7 @@ const courseSchema = new mongoose.Schema({
 //Course model
 const Course=mongoose.model("course",courseSchema);
 
-//validate register user
+
 function validateAddCourse(obj){
     const schema=joi.object({
         courseName:joi.string().trim().min(5).max(150).required(),

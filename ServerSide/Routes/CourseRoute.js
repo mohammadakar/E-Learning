@@ -1,7 +1,6 @@
 const router=require("express").Router();
 const { addCourse, getAllCoursesCount, getAllCourses, getCourse, deleteCourse, EditCourse, getCourseStudents, addTask, addComment, editTask, editComment, deleteTask, deleteComment, getTask, submitAssignment } = require("../Controllers/CourseController");
 const { verifyTokenAndAdmin, verifyToken } = require("../Middlewares/authmiddleware");
-const multer = require("multer");
 const path = require("path");
 
 

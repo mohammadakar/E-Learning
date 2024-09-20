@@ -184,10 +184,10 @@ export function getTaskById(courseId,taskId){
     }
 }
 
-export function submitAssignment(courseId, fileData, taskId) {
+export function submitAssignment(courseId, filePath, taskId) {
     return async (dispatch, getState) => {
         try {
-            await request.post(`/api/course/${courseId}/submit-assignment/task/${taskId}`, fileData, {
+            await request.post(`/api/course/${courseId}/submit-assignment/task/${taskId}`, { filePath }, {
                 headers: {
                     Authorization: "Bearer " + getState().auth.user.token,
                 },

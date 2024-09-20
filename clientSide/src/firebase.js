@@ -1,22 +1,17 @@
-// Import the functions you need from the SDKs
+// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getStorage } from "firebase/storage"; // Import for Firebase Storage
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: process.env.FIRE_BASE_API_KEY,
-  authDomain: "e-learning-f6156.firebaseapp.com",
-  projectId: "e-learning-f6156",
-  storageBucket: "e-learning-f6156.appspot.com",
-  messagingSenderId: "436148435831",
-  appId: "1:436148435831:web:09d984fb7f99fb54347f72",
-  measurementId: "G-SPMEMY3R6Z" // Optional if not using Analytics
+  apiKey: process.env.REACT_APP_FIRE_BASE_API_KEY,
+  authDomain: "e-learning-4efaa.firebaseapp.com",
+  projectId: "e-learning-4efaa",
+  storageBucket: "e-learning-4efaa.appspot.com",
+  messagingSenderId: "222134807204",
+  appId: "1:222134807204:web:767a97a3bacd8c6994d431"
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-
-// Initialize Firebase Storage
-const storage = getStorage(app); // Firebase Storage for file uploads
-
-export { app, storage }; // Export so you can use them in other files
+export const app = initializeApp(firebaseConfig);

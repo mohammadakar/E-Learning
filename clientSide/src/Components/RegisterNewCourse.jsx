@@ -21,9 +21,6 @@ const RegisterNewCourse = () => {
     const indexOfFirstCourse = indexOfLastCourse - coursesPerPage;
     const currentCourses = courses.slice(indexOfFirstCourse, indexOfLastCourse);
 
-    console.log(user?.major)
-    console.log(currentCourses)
-
     const totalPages = Math.ceil(courses.length / coursesPerPage);
 
     const paginate = (pageNumber) => setCurrentPage(pageNumber);

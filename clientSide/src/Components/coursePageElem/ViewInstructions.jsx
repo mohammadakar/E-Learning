@@ -5,8 +5,8 @@ import { getTaskById, submitAssignment } from "../../redux/ApiCalls/CourseApiCal
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { FaFilePdf } from "react-icons/fa";
-import { storage } from "../../firebase";  // Import Firebase storage
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage"; // Firebase Storage functions
+import { ref, uploadBytesResumable, getDownloadURL, getStorage } from "firebase/storage";
+import { app } from "../../firebase";
 
 const ViewInstructions = () => {
     const { courseId, taskId } = useParams();
@@ -30,7 +30,7 @@ const ViewInstructions = () => {
             toast.error("Please upload a valid PDF file.");
             return;
         }
-
+        const storage = getStorage(app)
         const storageRef = ref(storage, `assignments/${courseId}/${taskId}/${file.name}`);
         const uploadTask = uploadBytesResumable(storageRef, file);
         setIsUploading(true);
@@ -38,19 +38,18 @@ const ViewInstructions = () => {
         uploadTask.on(
             "state_changed",
             (snapshot) => {
-                // Progress function (optional)
+                
             },
             (error) => {
                 setIsUploading(false);
                 toast.error("Error uploading file: " + error.message);
             },
             () => {
-                getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                    // Here you can dispatch the action to submit the assignment with the downloadURL
-                    dispatch(submitAssignment(courseId, downloadURL, taskId));
-                    toast.success("Assignment submitted successfully!");
-                    setFile(null); // Reset file input
-                    e.target.reset(); // Reset form
+                getDownloadURL(uploadTask.snapshot.ref).then((filePath) => {
+                    
+                    dispatch(submitAssignment(courseId, filePath, taskId));
+                    setFile(null); 
+                    e.target.reset();
                     setIsUploading(false);
                 });
             }
@@ -99,7 +98,7 @@ const ViewInstructions = () => {
                     <button
                         type="submit"
                         className="bg-blue-500 text-white p-2 rounded w-full"
-                        disabled={isUploading}  // Disable button during upload
+                        disabled={isUploading} 
                     >
                         {isUploading ? "Uploading..." : "Submit Assignment"}
                     </button>

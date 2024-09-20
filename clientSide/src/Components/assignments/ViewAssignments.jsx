@@ -29,7 +29,7 @@ const ViewAssignments = () => {
         <div className="min-h-screen flex flex-col">
             <Header />
             <div className="flex-grow">
-                <div className="ml-4 mt-10 lg:ml-40 lg:mt-20 md:ml-32 sm:mt-16">
+                <div className="ml-4 mt-10 lg:ml-40 lg:mt-20 md:ml-32 md:mt-16">
                     <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
                         {currentAssignments?.map((assignment, index) => (
                             <div 
@@ -39,7 +39,7 @@ const ViewAssignments = () => {
                                 <h1 className="font-bold text-lg sm:text-base">{assignment.assignment}</h1>
                                 <p className="uppercase mt-1 text-sm text-gray-700">{assignment.username}</p>
                                 <a
-                                    href={`${assignment?.file?.filePath}`} 
+                                    href={`${assignment?.file}`} 
                                     target="_blank" 
                                     rel="noopener noreferrer"
                                     className="text-blue-500 underline mt-3 block"
