@@ -36,7 +36,7 @@ const Home = () => {
         <section className="min-h-screen">
             <Header />
             {user?.isAdmin ? (
-                <div className="course-container px-4">
+                <div className="course-container px-4 lg:ml-20">
                     <div className="container mx-auto mt-8 px-4 py-5">
                         {currentCourses.length > 0 ? (
                             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
