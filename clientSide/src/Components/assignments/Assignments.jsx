@@ -6,7 +6,7 @@ const Assignments = () => {
     
     const {user}=useSelector(state => state.auth);
     const { courses } = useSelector(state => state.course);
-
+    
     return ( 
         <div>
             <Header/>
@@ -19,7 +19,7 @@ const Assignments = () => {
                                         <div className="course-info">
                                             <h2 className="course-title uppercase">{course.courseName}</h2>
                                             <p className="course-code">{course.code}</p>
-                                            <Link to={`/viewassignments/${course._id}`}><button className="view-course-btn">View assignments</button></Link>
+                                            <Link to={`/viewassignments/${course._id}`}><button className="view-course-btn">View course tasks</button></Link>
                                         </div>
                                     </div>
                                     :

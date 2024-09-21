@@ -16,6 +16,7 @@ import ViewInstructions from "./Components/coursePageElem/ViewInstructions.jsx";
 import Assignments from "./Components/assignments/Assignments.jsx";
 import ViewAssignments from "./Components/assignments/ViewAssignments.jsx";
 import VerifyEmail from "./Components/VerifyEmail.jsx";
+import ViewTaskAssignments from "./Components/assignments/ViewTaskAssignments.jsx";
 
 function App() {
   const {user}=useSelector(state=>state.auth)
@@ -36,8 +37,9 @@ function App() {
       <Route path="/adduser" element={user?.isAdmin? <AddUser /> : <Navigate to='/home'/>}/>
       <Route path="/coursepage/:courseId/viewinstructions/:taskId" element={user? <ViewInstructions /> : <Navigate to='/'/>}/>
       <Route path="/assignments" element={user?.isInstructor ? <Assignments /> : <Navigate to='/home'/>}/>
+      <Route path="/viewtaskassignments/:id/:taskId" element={user?.isInstructor ? <ViewTaskAssignments /> : <Navigate to='/home'/>}/>
       <Route path="/viewassignments/:id" element={user?.isInstructor ? <ViewAssignments /> : <Navigate to='/home'/>}/>
-
+      
     </Routes>
   </BrowserRouter>
 }

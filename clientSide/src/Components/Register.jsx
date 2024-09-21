@@ -31,7 +31,6 @@ const Register = () => {
         if(major.trim()==="") return toast.error("Major is required!");
 
         dispatch(register({username,email,password,major}));
-        toast.success("We sent to you an email, please verify your email address ")
         navigate("/");
     }
     

@@ -36,7 +36,6 @@ const AddUser = () => {
         if (major.trim() === "") return toast.error("Major is required!");
 
         dispatch(addUser({ username, email, password, major }));
-        toast.success("User added successfully");
         navigate("/users");
         dispatch(getAllUsers());
     };

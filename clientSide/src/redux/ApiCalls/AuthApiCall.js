@@ -29,6 +29,7 @@ export function register(newUser) {
         try {
             const res = await request.post("/api/auth/register", newUser); 
             dispatch(authActions.register(res.data.message));
+            toast.success("We sent to you an email, please verify your email address ")
         } catch (error) {
             const errorMessage = error?.response?.data?.message || "An error occurred";
             toast.error(errorMessage);
@@ -59,6 +60,7 @@ export function addUser(newUser) {
                 }
             }); 
             dispatch(authActions.setAddedUser(res.data));
+            toast.success("User added successfully");
         } catch (error) {
             const errorMessage = error?.response?.data?.message || "An error occurred";
             toast.error(errorMessage);

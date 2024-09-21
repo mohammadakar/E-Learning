@@ -13,14 +13,13 @@ const Home = () => {
     const { courses } = useSelector(state => state.course);
     const dispatch = useDispatch();
     
-    useEffect(()=>{
+    useEffect(() => {
         dispatch(getAllCourses());
-    },[dispatch])
+    }, [dispatch]);
 
     useEffect(() => {
         dispatch(getUserCourses());
     }, [dispatch]);
-
 
     const [currentPage, setCurrentPage] = useState(1);
     const coursesPerPage = 9;
@@ -34,43 +33,52 @@ const Home = () => {
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     return (
-        <section>
+        <section className="min-h-screen">
             <Header />
             {user?.isAdmin ? (
-                <div className="course-container">
-                    <div className="flex-grow container mx-auto mt-10 px-4 py-5 ml-20">
+                <div className="course-container px-4">
+                    <div className="container mx-auto mt-8 px-4 py-5">
                         {currentCourses.length > 0 ? (
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                                 {currentCourses.map(course => (
                                     <div key={course._id} className="p-4 bg-white rounded-lg shadow-md">
                                         <form>
-                                            <h3 className="text-xl font-semibold uppercase">{course.courseName}</h3>
+                                            <h3 className="text-lg font-semibold uppercase">{course.courseName}</h3>
                                             <p className="text-gray-700">Code: {course.code}</p>
                                             <p className="text-gray-700">Instructor: {course.instructor}</p>
                                             <p className="text-gray-700">Time: {course.time}</p>
-                                            <div className="flex flex-row">
-                                            <Link to={`/editcourse/${course._id}`}><button className="rounded bg-blue-400 p-2 mt-3">Edit Course</button></Link>
-                                            <button className="rounded bg-red-400 p-2 mt-3 ml-10" onClick={(e)=>{
-                                                e.preventDefault();
-                                                swal({
-                                                    title: "Are you sure?",
-                                                    text: "You want to drop this course?",
-                                                    icon: "warning",
-                                                    buttons: true,
-                                                    dangerMode: true,
-                                                }).then((isOk) => {
-                                                    if (isOk) {
-                                                        dispatch(deleteCourse(course._id));
-                                                    }
-                                                });
-                                            }}>Delete Course</button>
+                                            <div className="flex flex-col sm:flex-row sm:space-x-2 mt-4">
+                                                <Link to={`/editcourse/${course._id}`}>
+                                                    <button className="w-full sm:w-auto bg-blue-500 text-white p-2 rounded mb-2 sm:mb-0">
+                                                        Edit Course
+                                                    </button>
+                                                </Link>
+                                                <button
+                                                    className="w-full sm:w-auto bg-red-500 text-white p-2 rounded"
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        swal({
+                                                            title: "Are you sure?",
+                                                            text: "You want to delete this course?",
+                                                            icon: "warning",
+                                                            buttons: true,
+                                                            dangerMode: true,
+                                                        }).then((isOk) => {
+                                                            if (isOk) {
+                                                                dispatch(deleteCourse(course._id));
+                                                            }
+                                                        });
+                                                    }}
+                                                >
+                                                    Delete Course
+                                                </button>
                                             </div>
                                         </form>
                                     </div>
                                 ))}
                             </div>
                         ) : (
-                            <p className="text-center">No courses founded</p>
+                            <p className="text-center">No courses found</p>
                         )}
                     </div>
                     {totalPages > 1 && (
@@ -96,32 +104,29 @@ const Home = () => {
                         </div>
                     )}
                 </div>
-            ) 
-            : user?.isInstructor ?
-            (
-                <div className="course-container">
+            ) : user?.isInstructor ? (
+                <div className="course-container px-4">
                     {courses && courses.length ? (
                         courses.map(course => (
-                            course?.instructor === user?.username ?
+                            course?.instructor === user?.username ? (
                                 <div key={course._id} className="course-card mt-10">
                                     <img src={course.cover.url} alt="cover" className="course-cover" />
                                     <div className="course-info">
                                         <h2 className="course-title uppercase">{course.courseName}</h2>
                                         <p className="course-code">{course.code}</p>
-                                        <Link to={`/coursepage/${course._id}`}><button className="view-course-btn">View Course</button></Link>
+                                        <Link to={`/coursepage/${course._id}`}>
+                                            <button className="view-course-btn">View Course</button>
+                                        </Link>
                                     </div>
                                 </div>
-                                :
-                                <></>
+                            ) : null
                         ))
                     ) : (
-                        <p className="text-center">No courses founded</p>
+                        <p className="text-center">No courses found</p>
                     )}
                 </div>
-            )
-            :
-            (
-                <div className="course-container">
+            ) : (
+                <div className="course-container px-4">
                     {userCourses && userCourses.length ? (
                         userCourses.map(course => (
                             <div key={course._id} className="course-card mt-10">
@@ -130,26 +135,33 @@ const Home = () => {
                                     <h2 className="course-title uppercase">{course.courseName}</h2>
                                     <p className="course-code">{course.code}</p>
                                     <p className="course-instructor">{course.instructor}</p>
-                                    <Link to={`/coursepage/${course._id}`}><button className="view-course-btn">View Course</button></Link>
-                                    <button className="drop-course-btn" onClick={(e) => {
-                                        e.preventDefault();
-                                        swal({
-                                            title: "Are you sure?",
-                                            text: "You want to drop this course?",
-                                            icon: "warning",
-                                            buttons: true,
-                                            dangerMode: true,
-                                        }).then((isOk) => {
-                                            if (isOk) {
-                                                dispatch(dropCourse(course._id));
-                                            }
-                                        });
-                                    }}>Drop Course</button>
+                                    <Link to={`/coursepage/${course._id}`}>
+                                        <button className="view-course-btn">View Course</button>
+                                    </Link>
+                                    <button
+                                        className="drop-course-btn"
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            swal({
+                                                title: "Are you sure?",
+                                                text: "You want to drop this course?",
+                                                icon: "warning",
+                                                buttons: true,
+                                                dangerMode: true,
+                                            }).then((isOk) => {
+                                                if (isOk) {
+                                                    dispatch(dropCourse(course._id));
+                                                }
+                                            });
+                                        }}
+                                    >
+                                        Drop Course
+                                    </button>
                                 </div>
                             </div>
                         ))
                     ) : (
-                        <p className="text-center">No courses founded</p>
+                        <p className="text-center">No courses found</p>
                     )}
                 </div>
             )}

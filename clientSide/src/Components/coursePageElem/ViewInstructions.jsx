@@ -57,15 +57,15 @@ const ViewInstructions = () => {
     };
 
     return (
-        <section className="flex flex-col lg:flex-row mt-20 ml-4 mr-4">
+        <section className="flex flex-col lg:flex-row mt-20 ml-4  mr-4">
             <Header />
-            <div className="container mx-auto px-4 mt-10 lg:mt-20">
+            <div className="container mx-auto px-4 mt-10 lg:mt-20 sm:ml-14 ">
                 <div className="bg-white p-6 rounded-md shadow-md max-w-4xl mx-auto">
                     <h1 className="font-bold text-2xl mb-4 text-blue-700">{taskById?.title}</h1>
                     <p className="text-gray-700 mb-4">{taskById?.description}</p>
                 </div>
             </div>
-            <div className="sidebar w-full lg:w-1/4 bg-gray-100 p-4 mt-10 lg:mt-0 shadow-md">
+            <div className="sidebar w-full lg:w-1/4 bg-gray-100 sm:ml-14 p-4 mt-10 lg:mt-0 shadow-md">
                 <h2 className="font-bold mb-4 text-blue-700">Submit Your Assignment</h2>
                 <form onSubmit={handleSubmit} className="upload-form">
                     <label htmlFor="fileUpload" className="block mb-2 font-semibold text-gray-700">
