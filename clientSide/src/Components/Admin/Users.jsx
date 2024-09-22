@@ -10,7 +10,7 @@ const Users = () => {
     
     useEffect(() => {
         dispatch(getAllUsers())
-    }, [dispatch])
+    }, [])
 
     const handleDeleteUser = (userId) => {
         dispatch(deleteUser(userId)).then(() => {
