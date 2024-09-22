@@ -281,9 +281,9 @@ const Header = () => {
                                     <img src={courseIcon} alt="courses" className='w-6 h-6'/>
                                     <p className="ml-4 cursor-none">Your Courses:</p>
                                 </div>
-                                {userCourses && userCourses.length > 0 && (userCourses.map(course=>(
+                                {courses && courses.length > 0 && (courses.map(course=>(
                                     <div key={course._id}>
-                                        <Link to="/coursepage" className='rounded bg-blue-600 p-3 w-full' >{course.courseName}</Link>
+                                        {user?.username === course?.instructor ?<button  className='rounded bg-blue-600 p-3 w-full'>{course.courseName}</button> : <></>}
                                     </div>
                                     )))
                                 }
@@ -327,7 +327,7 @@ const Header = () => {
                                 </div>
                                 {userCourses && userCourses.length > 0 && (userCourses.map(course=>(
                                     <div key={course._id}>
-                                        <Link to="/coursepage" className='rounded bg-blue-600 p-3 w-full' >{course.courseName}</Link>
+                                        <button className='rounded bg-blue-600 p-3 w-full' >{course.courseName}</button>
                                     </div>
                                     )))
                                 }

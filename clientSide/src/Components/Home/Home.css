@@ -76,7 +76,7 @@
 /* Responsive design */
 @media (max-width: 768px) {
     .course-card {
-        width: 100%;
+        width: 600px;
         height: auto;
     }
 }
