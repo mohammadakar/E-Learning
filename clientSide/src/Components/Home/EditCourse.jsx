@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { editCourse, getCourse } from "../../redux/ApiCalls/CourseApiCall";
 import { getInstructors } from "../../redux/ApiCalls/UserApiCall";
 import { useParams } from "react-router-dom";
+import Header from "../Header";
 
 const EditCourse = () => {
     
@@ -39,7 +40,9 @@ const EditCourse = () => {
     };
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
+        <div>
+            <Header/>
+            <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
             <h1 className="text-2xl font-bold mb-6">Edit course:</h1>
             <form onSubmit={formSubmitHandler} className="w-full max-w-lg">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -93,6 +96,7 @@ const EditCourse = () => {
                     Edit Course
                 </button>
             </form>
+        </div>
         </div>
     );
 }
