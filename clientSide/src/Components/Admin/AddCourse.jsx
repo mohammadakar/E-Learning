@@ -19,8 +19,6 @@ const AddCourse = ({instructors,majors}) => {
         setMajor("");
         setTime("");
     }
-    console.log(major);
-    console.log(instructors);
     
     
 

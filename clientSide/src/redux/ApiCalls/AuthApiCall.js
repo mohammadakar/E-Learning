@@ -1,6 +1,7 @@
 import { toast } from "react-toastify"
 import request from "../../utils/request";
 import { authActions } from "../Slices/AuthSlice";
+import { getAllUsers } from "./UserApiCall";
 
 
 
@@ -60,6 +61,7 @@ export function addUser(newUser) {
                 }
             }); 
             dispatch(authActions.setAddedUser(res.data));
+            getAllUsers();
             toast.success("User added successfully");
         } catch (error) {
             const errorMessage = error?.response?.data?.message || "An error occurred";

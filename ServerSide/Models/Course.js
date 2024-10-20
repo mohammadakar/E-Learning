@@ -77,7 +77,7 @@ const Course=mongoose.model("course",courseSchema);
 
 function validateAddCourse(obj){
     const schema=joi.object({
-        courseName:joi.string().trim().min(5).max(150).required(),
+        courseName:joi.string().trim().min(2).max(150).required(),
         code:joi.string().trim().min(2).max(150).required(),
         instructor:joi.string().trim().min(2).max(100).required(),
         major:joi.string().required(),
